@@ -1,6 +1,7 @@
 #ifndef HASHTABLE_H
 #define HASHTABLE_H
 
+#include <stdbool.h>
 #define MINISIZE 1
 
 struct listNode;
@@ -16,10 +17,11 @@ struct listNode
 
 typedef position list;
 
+/* List *tableLists will be an array of lists, allocated later */
 struct hashTb
 {
 	int tableSize;
-	list *tableLists;		//An array of pointers pointing to linked lists
+	list *tableLists;
 };
 
 int hash(char *key, int tableSize);

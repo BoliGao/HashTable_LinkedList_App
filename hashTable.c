@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <strings.h>
 #include "hashTable.h"
 
 /* create index for a string *key, rerurn the index value */
@@ -37,7 +38,7 @@ hashTable init_hashTable(int tableSize)
 	hT->tableSize = NextPrime(tableSize);		//It is better to set a table size with a prime number
 	
 	/* Allocate array of lists */
-	hT->tableLists = (listNode **)malloc(sizeof(struct listNode) * hT->tableSize);
+	hT->tableLists = malloc(sizeof(struct listNode) * hT->tableSize);
 	if(hT->tableLists == NULL){
 		printf("Out of space\n");
 		return NULL;
@@ -45,7 +46,7 @@ hashTable init_hashTable(int tableSize)
 	
 	/* Allocate list headers */
 	for(int i=0; i < hT->tableSize; i++){
-		hT->tableLists[i] = (listNode *)malloc(sizeof(struct listNode));
+		hT->tableLists[i] = malloc(sizeof(struct listNode));
 		if(hT->tableLists[i] == NULL){
 			printf("Out of space\n");
 			return NULL;
@@ -69,7 +70,7 @@ position find_in_hashTable(char *key, hashTable hT)
 	l = hT->tableLists[ hash(key, hT->tableSize) ];
 	p = l->next;
 
-	while( p != NULL && (strcmp(p->data, key) != 0))
+	while( p != NULL && (strcasecmp(p->data, key) != 0))	//case insensitive string comparasion
 		p = p->next;
 	
 	return p;
@@ -108,7 +109,7 @@ int add_to_hashTable(char *key, hashTable hT)
 		}
 	}
 	else{
-		printf("key is already in the list\n");
+		//printf("key is already in the list\n");
 		return -1;
 	}
 }
@@ -128,10 +129,10 @@ void print_hashTable(hashTable hT)
 			if(p != NULL)
 				printf("Index%d:", i);
 			while(p){
-				printf(" %s->", p->data);
+				printf(" %s->\n", p->data);
 				p = p->next;
 			}
-			printf("\n");
+			//printf("");
 		}
 	}
 }
