@@ -1,7 +1,7 @@
 CC=gcc
 CFLAGS=-I -Wall
 DEPS = application.h hashTable.h linked_list.h
-OBJ = application.o hashTable.o linked_list.c
+OBJ = main.o application.o hashTable.o linked_list.c
 
 %.o: %.c $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
