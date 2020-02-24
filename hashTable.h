@@ -27,7 +27,7 @@ struct hashTb
 
 int hash(char *key, int tableSize);
 hashTable init_hashTable(int tableSize);
-void print_hashTable(hashTable hT);
+int print_hashTable(hashTable hT);
 int add_to_hashTable(char *key, hashTable hT);
 position find_in_hashTable(char *key, hashTable hT);
 bool IsPrime(int num);

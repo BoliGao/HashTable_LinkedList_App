@@ -119,13 +119,16 @@ int add_to_hashTable(char *key, hashTable hT)
 }
 
 /* print all elements in the table */
-void print_hashTable(hashTable hT)
+int print_hashTable(hashTable hT)
 {
 	list l;
 	position p;
+	int total = 0;
 	
-	if(hT == NULL)
+	if(hT == NULL){
 		printf("Error: Hash table is NULL\n");
+		return -1;
+	}
 	else{
 		for(int i=0; i < hT->tableSize; i++){
 			l = hT->tableLists[i];
@@ -134,9 +137,11 @@ void print_hashTable(hashTable hT)
 				printf("Index%d:", i);
 			while(p){
 				printf(" %s (occurrence: %d) ->\n", p->data, p->occurrence);
+				total += p->occurrence;
 				p = p->next;
 			}
 		}
+		return total;
 	}
 }
 

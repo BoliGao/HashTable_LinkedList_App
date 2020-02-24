@@ -39,7 +39,8 @@ int main(int argc, char *argv[])
             hashTable ht = init_hashTable(TABLESIZE);
             if(fileToTable(fp, ht)){
                 printf("Reading done, start to print now:\n");
-                print_hashTable(ht);
+                int total = print_hashTable(ht);
+                printf("The amount of stored text items is %d\n", total);
             }
             else{
                 printf("Error occurs during reading");
