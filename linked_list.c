@@ -19,7 +19,7 @@ int add_to_list(linked_list *ll, char *s)
 		
 		/* create a new node */
 		tmp->next = (linked_list* )malloc(sizeof(linked_list));
-		tmp->next->data = s;
+		tmp->next->data = strdup(s);
 		tmp->next->index = tmp->index + 1;
 		tmp->next->next = NULL;
 		index = tmp->next->index;	

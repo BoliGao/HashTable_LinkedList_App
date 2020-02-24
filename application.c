@@ -3,11 +3,12 @@
 #include <string.h>
 #include <ctype.h>
 #include "hashTable.h"
+#include "linked_list.h"
 #include "application.h"
 #define TABLESIZE 3500  //The amount of commond English words is about 3000 and the amount of punctuation is 14, others save for numbers
 #define WORDLEN 50  //The length of a word
 
-int fileToTable(FILE *fp, hashTable ht)
+int fileToTable(FILE *fp, hashTable ht, linked_list *ll)
 {
     printf("Reading...\n");
 
@@ -15,12 +16,31 @@ int fileToTable(FILE *fp, hashTable ht)
     char *punct = malloc(sizeof(char) * 5);
 
     while(fscanf(fp, "%s", word) != EOF){
+        add_to_list(ll, word);
         filter_alnum(word, punct);
         add_to_hashTable(word, ht);
         add_to_hashTable(punct, ht);
         memset(word, 0, sizeof(word));  //empty the string for the next reading
     }
 
+    free(word);
+    free(punct);
+    return 1;
+}
+
+int listToFile(linked_list *ll)
+{
+    FILE *fp = fopen("reproduced.txt", "w");
+    linked_list *tmp = ll;
+
+    while(tmp->next != NULL){
+		tmp = tmp->next;
+		fputs(tmp->data, fp);
+        fputc(' ', fp);
+	}
+    printf("The input file reproduced successfully, please check file 'reproduced.txt'\n");
+    
+    fclose(fp);
     return 1;
 }
 
@@ -37,10 +57,14 @@ int main(int argc, char *argv[])
         else{
             printf("File opened successfully\n");
             hashTable ht = init_hashTable(TABLESIZE);
-            if(fileToTable(fp, ht)){
-                printf("Reading done, start to print now:\n");
+            linked_list *head = (linked_list* )malloc(sizeof(linked_list));
+
+            if(fileToTable(fp, ht, head)){
+                fclose(fp);
+                printf("Reading done, start to print the table now:\n");
                 int total = print_hashTable(ht);
-                printf("The amount of stored text items is %d\n", total);
+                printf("\nThe amount of stored text items in table is %d\n", total);
+                listToFile(head);
             }
             else{
                 printf("Error occurs during reading");
@@ -55,6 +79,7 @@ int main(int argc, char *argv[])
 
     return 0;
 }
+
 
 void filter_alnum(char *s, char *punct){
     for (char *p = s; *p; ++p)
