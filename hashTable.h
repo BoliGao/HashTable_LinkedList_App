@@ -13,6 +13,7 @@ struct listNode
 {
 	char *data;
 	position next;
+	int occurrence;
 };
 
 typedef position list;

@@ -51,8 +51,10 @@ hashTable init_hashTable(int tableSize)
 			printf("Out of space\n");
 			return NULL;
 		}
-		else
+		else{
+			hT->tableLists[i]->occurrence = 0;
 			hT->tableLists[i]->next = NULL;
+		}
 	}
 	
 	return hT;
@@ -103,12 +105,14 @@ int add_to_hashTable(char *key, hashTable hT)
 			l->next = newNode;
 			newNode->data = (char *)malloc(sizeof(char) * 20);
 			strcpy(newNode->data, key);
+			(newNode->occurrence) += 1;
 			newNode->next = NULL;
 
 			return count;
 		}
 	}
 	else{
+		(pos->occurrence) += 1;
 		//printf("key is already in the list\n");
 		return -1;
 	}
@@ -129,10 +133,9 @@ void print_hashTable(hashTable hT)
 			if(p != NULL)
 				printf("Index%d:", i);
 			while(p){
-				printf(" %s->\n", p->data);
+				printf(" %s (occurrence: %d) ->\n", p->data, p->occurrence);
 				p = p->next;
 			}
-			//printf("");
 		}
 	}
 }
